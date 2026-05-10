@@ -102,7 +102,7 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: 'Employee'
-          slot-name: 'staging'
+         
           package: './output'
 
 
