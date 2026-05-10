@@ -99,10 +99,9 @@ jobs:
         run: ls -R ./output   # ✅ verify .azurefunctions is present
 
       - name: Deploy to Staging
-        uses: Azure/functions-action@v1
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'Employee'
-         
           package: './output'
 
 
@@ -125,7 +124,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Production
-        uses: Azure/functions-action@v1
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'Employee'
           slot-name: 'production'
