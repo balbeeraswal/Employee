@@ -1,0 +1,71 @@
+name: CI/CD WebApp Pipeline
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '10.0.x'
+
+jobs:
+
+# ---------------- BUILD ----------------
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build
+        run: dotnet build --configuration Release
+
+      - name: Publish
+        run: dotnet publish Employee.csproj -c Release -o ./output
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp
+          path: ./output
+
+# ---------------- TEST ----------------
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Run Tests
+        run: dotnet test --configuration Release
+
+
+# ---------------- PRODUCTION ----------------
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: test
+    environment: production
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp
+          path: ./output
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Production WebApp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'Employee'
+          package: './output'
