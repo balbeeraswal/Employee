@@ -67,7 +67,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'Employee'
-        #   slot-name: 'staging'   # remove if you don’t have a staging slot
           package: './output'
 
 # ---------------- PRODUCTION ----------------
