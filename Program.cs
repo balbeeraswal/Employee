@@ -1,3 +1,5 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Employee_Dept_Loc_Proj.Services;
 using Employees.DbContxt;
 using Employees.Filters;
@@ -11,6 +13,21 @@ using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
+
+string keyVaultUri = builder.Configuration["KeyVaultUrl"];
+
+var client = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+
+KeyVaultSecret secret = client.GetSecret("kvAzureSecret");
+
+string dbConnectionString = secret.Value;
+
+builder.Services.AddDbContext<DatabaseContext>
+    (options => options.UseSqlServer(dbConnectionString));
+
+//builder.Services.AddDbContext<DatabaseContext>
+//    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
+
 
 builder.Services.AddResponseCompression(options =>
 {
@@ -55,8 +72,6 @@ builder.Services.AddCors(options =>
         });
 
 });
-builder.Services.AddDbContext<DatabaseContext>
-    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
 builder.Services.AddScoped<IEmployee, EmployeeRepo>();
 
 builder.Services.AddHttpClient<DepartmentApiClient>(client =>
