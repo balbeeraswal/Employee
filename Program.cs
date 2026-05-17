@@ -54,7 +54,6 @@ builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
 builder.Services.AddScoped<AsyncExceptionFilter>();
 builder.Services.AddScoped<ApiResponseResultFilter>();
 
-
 builder.Services.AddControllers(options =>
 {
     options.Filters.AddService<AsyncExceptionFilter>();
