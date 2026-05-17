@@ -63,10 +63,10 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
+    options.AddPolicy("AllowAngularAppPolicy",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200", "http://localhost:54224")
+            policy.WithOrigins("http://localhost:4200", "http://localhost:54224", "webappnameangularstaging-bwaxejcbbsg4bve9.centralindia-01.azurewebsites.net", "webappnameangular-fjfwaygdbkc6a6gh.centralindia-01.azurewebsites.net")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -96,7 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowAngularAppPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseResponseCompression();
