@@ -65,7 +65,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularAppPolicy",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200", "http://localhost:54224", "webappnameangularstaging-bwaxejcbbsg4bve9.centralindia-01.azurewebsites.net", "webappnameangular-fjfwaygdbkc6a6gh.centralindia-01.azurewebsites.net")
+            policy.WithOrigins("http://localhost:4200", "http://localhost:54224", "https://polite-island-0cda25b00.7.azurestaticapps.net", "https://icy-cliff-0a457e100.7.azurestaticapps.net")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
