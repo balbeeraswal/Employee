@@ -94,11 +94,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAngularAppPolicy");   // ← Must be FIRST
 app.UseHttpsRedirection();
-app.UseCors("AllowAngularAppPolicy");
-//app.UseAuthentication();
-//app.UseAuthorization();
-//app.UseResponseCompression();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseResponseCompression();
 app.MapControllers();
-
 app.Run();
