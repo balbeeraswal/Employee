@@ -28,8 +28,6 @@ builder.Services.AddDbContext<DatabaseContext>
 //builder.Services.AddDbContext<DatabaseContext>
 //    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
 
-
-
 builder.Services.AddResponseCompression(options =>
 {
     options.EnableForHttps = true;
