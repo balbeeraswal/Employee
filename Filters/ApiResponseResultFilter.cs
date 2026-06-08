@@ -1,5 +1,5 @@
 ﻿
-using Employees.Models;
+using EmployeeApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

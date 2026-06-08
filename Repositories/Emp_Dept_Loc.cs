@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Employees.DbContxt;
 using Employees.Interfaces;
-using Employees.Models;
+using EmployeeApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Employees.Repositories

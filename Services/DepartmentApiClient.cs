@@ -1,6 +1,6 @@
 ﻿
 
-using Employees.Models;
+using EmployeeApi.Models;
 
 namespace Employee_Dept_Loc_Proj.Services
 {

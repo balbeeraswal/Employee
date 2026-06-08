@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Text;
-using Employees.Models;
+using EmployeeApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;

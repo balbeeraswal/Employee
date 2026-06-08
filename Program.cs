@@ -1,6 +1,10 @@
+using AutoMapper;
 using Azure.Identity;
+using Azure.Messaging.ServiceBus;
 using Azure.Security.KeyVault.Secrets;
 using Employee_Dept_Loc_Proj.Services;
+using EmployeeApi.Middleware;
+using Employees.AutoMappers;
 using Employees.DbContxt;
 using Employees.Filters;
 using Employees.Interfaces;
@@ -9,24 +13,46 @@ using JWTAuthentication;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
+using Serilog;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
 
-string keyVaultUri = builder.Configuration["KeyVaultUrl"];
+builder.Services.AddAuthorization();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-var client = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+builder.Host.UseSerilog((ctx, lc) => lc
+    .ReadFrom.Configuration(ctx.Configuration)
+    .Enrich.FromLogContext());
 
-KeyVaultSecret secret = client.GetSecret("kvAzureSecret");
 
-string dbConnectionString = secret.Value;
 
-builder.Services.AddDbContext<DatabaseContext>
-    (options => options.UseSqlServer(dbConnectionString));
+builder.Services.AddSingleton<ServiceBusClient>(sp =>
+            new ServiceBusClient(builder.Configuration.GetConnectionString("ServiceBusConnection")));
+
+builder.Services.AddSingleton<ServiceBusSender>(sp =>
+{
+    var client = sp.GetRequiredService<ServiceBusClient>();
+    return client.CreateSender("myqueue");
+});
+
+//string keyVaultUri = builder.Configuration["KeyVaultUrl"];
+
+//var client = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+
+//KeyVaultSecret secret = client.GetSecret("kvAzureSecret");
+
+//string dbConnectionString = secret.Value;
 
 //builder.Services.AddDbContext<DatabaseContext>
-//    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
+//    (options => options.UseSqlServer(dbConnectionString));
+
+builder.Services.AddDbContext<DatabaseContext>
+    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
 
 builder.Services.AddResponseCompression(options =>
 {
@@ -53,11 +79,21 @@ builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
 builder.Services.AddScoped<AsyncExceptionFilter>();
 builder.Services.AddScoped<ApiResponseResultFilter>();
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.AddService<AsyncExceptionFilter>();
-    options.Filters.AddService<ApiResponseResultFilter>();
-});
+// Register AutoMapper and scan for Profile classes in this assembly
+// Add services to the container.
+
+// REGISTER AUTOMAPPER HERE 
+// This tells AutoMapper to scan the assembly (project) where MappingProfile lives
+// This satisfies the new signature by passing an empty config expression first
+builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
+
+
+builder.Services.AddControllers();
+//builder.Services.AddControllers(options =>
+//{
+//    options.Filters.AddService<AsyncExceptionFilter>();
+//    options.Filters.AddService<ApiResponseResultFilter>();
+//});
 
 builder.Services.AddCors(options =>
 {
@@ -88,15 +124,37 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAngularAppPolicy");   // ← Must be FIRST
+// 1. Exception Handling MUST always be first to catch errors from everything below it.
+app.UseCustomExceptionHandling();
+
+// 2. Move HTTPS redirection here. Drop insecure requests immediately.
 app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
+
+// 3. Move Serilog up here. It can now log execution times, status codes, and auth failures.
+app.UseSerilogRequestLogging();
+
+// 4. Response compression should compress everything underneath it.
 app.UseResponseCompression();
+
+// 5. Routing comes before security boundaries.
+app.UseRouting();
+
+// 6. CORS MUST come after UseRouting, but BEFORE Authentication/Authorization.
+// This ensures auth failure responses still include CORS headers for Angular.
+app.UseCors("AllowAngularAppPolicy");
+
+// 7. Identity Check: Who are you?
+app.UseAuthentication();
+
+// 8. Permissions Check: Are you allowed here?
+app.UseAuthorization();
+
+// 9. Execute the Endpoint (Maps the request to your Controllers)
 app.MapControllers();
+
+// 10. Start the App
 app.Run();

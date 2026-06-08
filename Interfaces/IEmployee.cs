@@ -1,5 +1,6 @@
 ﻿
-using Employees.Models;
+using EmployeeApi.DTOs;
+using EmployeeApi.Models;
 
 namespace Employees.Interfaces
 {
@@ -7,8 +8,13 @@ namespace Employees.Interfaces
     {
         public  Task<IEnumerable<Employee>> GetEmployees();
         public Task<Employee> GetEmployeeById(int id);
-        public  Task<Employee> AddEmployee(Employees.Models.Employee employee);
+        Task<Employee> AddEmployee(Employee employee);
+        Task<bool> DeleteEmployee(int id);
+        Task<Employee> UpdateEmployee(Employee employee);
+        Task<IEnumerable<EmployeeDeptLocDto>> GetEmployeeDeptLocDetails();
+        Task<IEnumerable<Employee>> FetchEmployeesWithKeySetPagination(int? lastEmpId = null);
+
     }
 
-   
+
 }

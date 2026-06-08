@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Employees.Models;
+using EmployeeApi.Models;
 
 namespace Employees.DbContxt
 
@@ -9,11 +9,11 @@ namespace Employees.DbContxt
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
-        public DbSet<Employees.Models.Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employees.Models.Employee>(entity =>
+            modelBuilder.Entity<Employee>(entity =>
             {
                 entity.ToTable("tblEmployee");
                 entity.HasKey(p => p.EmpId);
@@ -21,6 +21,16 @@ namespace Employees.DbContxt
                 entity.Property(e => e.EmpName).HasMaxLength(20);
                 entity.Property(e => e.DeptId).HasMaxLength(20);
                 entity.Property(e => e.LocId).HasMaxLength(20);
+                // Foreign key relationships
+                entity.HasOne(e => e.Department)
+                      .WithMany(d => d.Employee)
+                      .HasForeignKey(e => e.DeptId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Location)
+                      .WithMany(l => l.Employee)
+                      .HasForeignKey(e => e.LocId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
          
