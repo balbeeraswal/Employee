@@ -95,7 +95,7 @@ namespace Employees.Controllers
             //Call funtion and pass JWT token with the request
             var jwtToken = await HttpContext.GetTokenAsync("access_token");
 
-            var functionurl = "http://localhost:7274/api/Employee/5";
+            var functionurl = "https://functionappwithmicroname-cta4cmebfja5a0d7.centralindia-01.azurewebsites.net/api/Employee/{id}";
 
             var request = new HttpRequestMessage(HttpMethod.Post, functionurl);
 

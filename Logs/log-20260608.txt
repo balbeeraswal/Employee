@@ -1550,3 +1550,33 @@ VALUES (@p0, @p1, @p2);
 2026-06-08 21:56:58.494 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/_vs/browserLink - 200 null text/javascript; charset=UTF-8 58.9703ms
 2026-06-08 21:56:58.590 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/v1/swagger.json - null null
 2026-06-08 21:56:58.607 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 16.4988ms
+2026-06-08 22:08:19.688 +05:30 [INF] User profile is available. Using 'C:\Users\hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-06-08 22:08:19.877 +05:30 [INF] Now listening on: https://localhost:7283
+2026-06-08 22:08:19.881 +05:30 [INF] Now listening on: http://localhost:5047
+2026-06-08 22:08:19.921 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-08 22:08:19.930 +05:30 [INF] Hosting environment: Development
+2026-06-08 22:08:19.931 +05:30 [INF] Content root path: C:\Users\hp\Desktop\TestWebApiProject\Employee
+2026-06-08 22:08:20.158 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/index.html - null null
+2026-06-08 22:08:20.305 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/index.html - 304 null null 152.8069ms
+2026-06-08 22:08:20.313 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/swagger-ui-standalone-preset.js - null null
+2026-06-08 22:08:20.313 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/swagger-ui-bundle.js - null null
+2026-06-08 22:08:20.313 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/_framework/aspnetcore-browser-refresh.js - null null
+2026-06-08 22:08:20.350 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/swagger-ui.css - null null
+2026-06-08 22:08:20.408 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/swagger-ui-bundle.js - 304 null null 95.2981ms
+2026-06-08 22:08:20.406 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/swagger-ui-standalone-preset.js - 304 null null 93.3235ms
+2026-06-08 22:08:20.313 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/index.css - null null
+2026-06-08 22:08:20.355 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/index.js - null null
+2026-06-08 22:08:20.395 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/_vs/browserLink - null null
+2026-06-08 22:08:20.431 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/swagger-ui.css - 304 null null 118.3303ms
+2026-06-08 22:08:20.448 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/index.css - 304 null null 135.6602ms
+2026-06-08 22:08:20.454 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/index.js - 304 null null 99.2927ms
+2026-06-08 22:08:20.431 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/_framework/aspnetcore-browser-refresh.js - 200 14921 application/javascript; charset=utf-8 118.9474ms
+2026-06-08 22:08:20.488 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/_vs/browserLink - 200 null text/javascript; charset=UTF-8 127.8882ms
+2026-06-08 22:08:20.508 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/swagger/v1/swagger.json - null null
+2026-06-08 22:08:20.522 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 13.8399ms
+2026-06-08 22:08:24.298 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7283/api/Employee/GetEmployees - null null
+2026-06-08 22:08:24.379 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-06-08 22:08:24.393 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2026-06-08 22:08:24.398 +05:30 [INF] HTTP GET /api/Employee/GetEmployees responded 401 in 85.4068 ms
+2026-06-08 22:08:24.403 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7283/api/Employee/GetEmployees - 401 0 null 104.4507ms
